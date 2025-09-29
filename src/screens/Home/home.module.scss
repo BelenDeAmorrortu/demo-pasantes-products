@@ -1,0 +1,146 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+.homeContainer {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.title {
+    color: $text;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.filters {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.searchContainer {
+    margin-bottom: 1.5rem;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: $primary;
+    }
+
+    &::placeholder {
+        color: #6c757d;
+    }
+}
+
+.selectsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.select {
+    min-width: 200px;
+}
+
+.resultsInfo {
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    color: $text;
+    font-weight: 500;
+}
+
+.productsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.loadingContainer {
+    @include flex-column-center;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid $primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.errorContainer {
+    @include flex-column-center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #e74c3c;
+
+    h2 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    p {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+}
+
+.emptyContainer {
+    @include flex-column-center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: $text;
+
+    h3 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        color: $text;
+    }
+
+    p {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+}

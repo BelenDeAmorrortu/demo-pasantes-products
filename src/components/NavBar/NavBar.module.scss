@@ -1,0 +1,24 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+.navbar {
+    background-color: $primary;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    @include flex-row-center;
+    gap: 0.5rem;
+}
+
+.logoIcon {
+    font-size: 1.5rem;
+}
+
+.title {
+    color: $background;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
