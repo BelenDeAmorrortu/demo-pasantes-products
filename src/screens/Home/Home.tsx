@@ -1,13 +1,40 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFetchProducts } from "@/hooks/useFetchProducts";
 import { useProductsStore } from "@/stores/productsStore";
 import Card from "@/components/Card/Card";
 import Select from "@/components/Select/Select";
 import type { Product } from "@/types";
+import {
+  addFavorite as addFavoriteRequest,
+  fetchFavorites as fetchFavoritesRequest,
+  removeFavorite as removeFavoriteRequest,
+} from "@/services/server/ServerService";
 import styles from "./home.module.scss";
 
 const Home = () => {
   const { products, params, set } = useProductsStore();
   const { data, isLoading, error } = useFetchProducts();
+  const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
+
+  const favoriteIds = useMemo(
+    () => new Set(favoriteProducts.map((favorite) => favorite.id)),
+    [favoriteProducts]
+  );
+
+  const loadFavorites = useCallback(async () => {
+    try {
+      const response = await fetchFavoritesRequest();
+      const favorites = response.data || [];
+      setFavoriteProducts(Array.isArray(favorites) ? favorites : []);
+    } catch (favoritesError) {
+      console.error("Error al cargar favoritos", favoritesError);
+      setFavoriteProducts([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadFavorites();
+  }, [loadFavorites]);
 
   // Opciones para los selects
   const sortOptions = [
@@ -40,6 +67,39 @@ const Home = () => {
   const handleProductClick = (product: Product) => {
     console.log("Product clicked:", product);
   };
+
+  const handleToggleFavorite = useCallback(
+    async (product: Product) => {
+      const alreadyFavorite = favoriteIds.has(product.id);
+
+      try {
+        if (alreadyFavorite) {
+          await removeFavoriteRequest(product.id);
+          setFavoriteProducts((currentFavorites) =>
+            currentFavorites.filter((favorite) => favorite.id !== product.id)
+          );
+          return;
+        }
+
+        const response = await addFavoriteRequest(product);
+        const savedFavorite = response.data;
+        setFavoriteProducts((currentFavorites) => {
+          const exists = currentFavorites.some(
+            (favorite) => favorite.id === savedFavorite.id
+          );
+
+          if (exists) {
+            return currentFavorites;
+          }
+
+          return [...currentFavorites, savedFavorite];
+        });
+      } catch (toggleError) {
+        console.error("Error al actualizar favoritos", toggleError);
+      }
+    },
+    [favoriteIds]
+  );
 
   if (error) {
     return (
@@ -111,6 +171,8 @@ const Home = () => {
                   key={product.id}
                   product={product}
                   onClick={handleProductClick}
+                  isFavorite={favoriteIds.has(product.id)}
+                  onToggleFavorite={handleToggleFavorite}
                 />
               ))}
             </div>

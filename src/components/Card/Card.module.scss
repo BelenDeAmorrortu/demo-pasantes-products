@@ -144,3 +144,42 @@
     color: #e74c3c;
     font-weight: 500;
 }
+
+.favoriteToggle {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        color: #e74c3c;
+        background-color: rgba(255, 255, 255, 0.95);
+        transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+}
+
+.favoriteToggleActive {
+    color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.15);
+}
